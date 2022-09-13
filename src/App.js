@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { BrowserRouter, Routes, Route, } from "react-router-dom";
+import Homepage from "./Components/Homepage";
+import Login from "./Components/Login";
+import Navbar from "./Components/Navbar";
+import News from "./Components/News";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
+  const handleLogin = (email, password) => {
+    if(email==="test@gmail.com" && password==="12345678") {
+      setIsLoggedIn(true);
+      console.log("logged in");
+      return true;
+    }
+    return false;
+  }
+
+  const handleLogout = () => setIsLoggedIn(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+    <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>
+    <Routes>
+      <Route path="/" element={<Homepage />} />
+      <Route path="/login" element={<Login isLoggedIn={isLoggedIn} handleLogin={handleLogin} />} />
+      <Route path="/news" element={<News isLoggedIn={isLoggedIn} />} />
+    </Routes>
+  </BrowserRouter>
   );
 }
 
